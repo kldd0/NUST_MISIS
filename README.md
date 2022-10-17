@@ -1,1 +1,1 @@
-# Tasks from NUST MISIS programming
+# Tasks for NUST MISIS programming
