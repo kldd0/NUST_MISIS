@@ -11,26 +11,15 @@ int main() {
         std::string s;
         std::cin >> n >> k;
         std::cin >> s;
-        std::vector<std::string> vs;
-        std::string as = "";
-        for (int i = 0; i < n; ++i) {
-            if (!as.empty() && as[as.length() - 1] != s[i]) {
-                vs.push_back(as);
-                as = "";
-            }
-            as += s[i];
+        std::vector<int> ps(n + 1);
+        ps[0] = 0;
+        for (int i = 1; i <= n; ++i) {
+            ps[i] = ps[i - 1];
+            if (s[i - 1] == 'W') ps[i] += 1;
         }
-        vs.push_back(as);
-        int mn = 100000000;
-        for (int i = 0; i < vs.size() - 2; ++i) {
-            // if (vs[i].length() + vs[i + 2].length() >= k) {
-            //     mn = std::min(vs[i + 1].length(), mn);
-            // }
-            if (vs[i].length() + vs[i + 1].length() + vs[i + 2].length() >= k) {
-                if (vs[i].length() + vs[i + 1].length() + vs[i + 2].length() < mn) {
-                    mn = vs[i + 1].length();
-                }
-            }
+        int mn = 10000000;
+        for (int i = k; i <= n; ++i) {
+            if (ps[i] - ps[i - k] < mn) mn = ps[i] - ps[i - k];
         }
         std::cout << mn << "\n";
     }
