@@ -13,10 +13,8 @@ int main() {
         int xo = x, yo = y;
         if (e == 'U') y += 1;
         if (e == 'R') x += 1;
-        // if ((yo - xo > 0 && y - x < 0) || (yo - xo < 0 && y - x > 0)) r += 1;
-        // std::cout << x << " " << y << " " << yo - xo << " " << y - x << " " << r << "\n";
-        if (yo - xo == 0 && ) r += 1;
-        std::cout << x << " " << y << "\n";
+        if (y - x == 0) px = xo, py = yo;
+        if (yo - xo == 0 && ((py - px > 0 && y - x < 0) || (py - px < 0 && y - x > 0))) r += 1;
     }
     std::cout << r << "\n";
     return 0;
