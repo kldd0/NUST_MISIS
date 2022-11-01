@@ -16,7 +16,7 @@ std::vector<int> cache(MAXINT, 1);
 int s_2(int n) {
     // int s = 0;
     int ci = 0;
-    while (cache[ci] * 2 < n) {
+    while (cache[ci] * 2 <= n) {
         ++ci;
         cache[ci] = cache[ci - 1] * 2;
     }
@@ -44,19 +44,24 @@ int main() {
         } else {
             int k = s_2(n);
             int i = cache[k];
-            int nn = n;
-            int c = 0;
-            while (i > 0 && nn > 0) {
-                int m = 3;
-                while (m * i < n && nn > 0) {
-                    nn -= i;
-                    m += 2;
-                    ++c;
+            int nc = n - c;
+            int cnt = 0;
+            while (k > 0 && nc > 0) {
+                int p = 3;
+                while (i <= n) {
+                    i *= p;
+                    p += 2;
+                    nc -= k;
+                    ++cnt;
                 }
-                --i;
+                --k;
             }
-            if (nn > 0) std::cout << -1 << "\n";
-            else std::cout << c << "\n";
+            if (nc == 0) {
+                std::cout << cnt << "\n";
+            } else {
+                std::cout << -1 << "\n";
+            }
+            // std::cout << nc << " " << k << " " << i << " " << cnt << "\n";
         }
         
     }
