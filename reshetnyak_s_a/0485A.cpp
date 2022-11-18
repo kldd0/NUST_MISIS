@@ -7,7 +7,7 @@ int main() {
     int a, m;
     std::cin >> a >> m;
     std::set<int> s;
-    s.insert(a);
+    s.insert(a % m);
     bool f = false;
     std::set<int>::iterator prev = s.begin();
     for (int i = 0; i < MAXINT; ++i) {
