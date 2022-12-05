@@ -17,11 +17,13 @@ Rdec2D operator+(const Rdec2D &lhs, const Rdec2D &rhs);
 
 Rdec2D operator-(const Rdec2D &lhs, const Rdec2D &rhs);
 
-Rdec2D operator*(const Rdec2D &vec, int s);
+Rdec2D operator*(const Rdec2D &vec, double s);
 
-double dot(const Rdec2D &lhs, const Rdec2D &rhs);
+bool operator==(const Rdec2D &lhs, const Rdec2D &rhs);
 
-double norm(const Rdec2D &vec);
+double Dot(const Rdec2D &lhs, const Rdec2D &rhs);
+
+double Norm(const Rdec2D &vec);
 
 
 // transform
@@ -37,9 +39,11 @@ Rpol2D operator+(const Rpol2D &lhs, const Rpol2D &rhs);
 
 Rpol2D operator-(const Rpol2D &lhs, const Rpol2D &rhs);
 
-Rpol2D operator*(const Rpol2D &vec, int s);
+Rpol2D operator*(const Rpol2D &vec, double s);
 
-double dot(Rpol2D &lhs, Rpol2D &rhs);
+bool operator==(const Rpol2D &lhs, const Rpol2D &rhs);
+
+double Dot(Rpol2D &lhs, Rpol2D &rhs);
 
 
 // Output
