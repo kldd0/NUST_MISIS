@@ -2,9 +2,9 @@
 
 int main() {
     // task 1
-    CatchUpModel();
+    // CatchUpModel();
 
     // task 2
-    // GravitationalModel();
+    GravitationalModel();
     return 0;
 }

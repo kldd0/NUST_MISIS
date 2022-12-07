@@ -2,6 +2,7 @@
 #include <vectors/vectors.hpp>
 #include "vectors_models.hpp"
 #include <limits>
+#include <fstream>
 
 const double rA = 0.5;
 
@@ -82,7 +83,80 @@ void CatchUpModel() {
     }
 }
 
+void TableInit(std::ofstream& outstrm) {
+    outstrm << "n" << "," << "t" << "," << "x" << "," << "y" << "," 
+        << "vx" << "," << "vy" << "," << "rx" << "," << "ry" << "\n";
+}
 
-// void GravitationalModel() {
+void WriteInTable(std::ofstream& outstrm, int n, double t, Rdec2D& pos, Rdec2D& velocity, Rdec2D& r) {
+    outstrm << n << "," << t << "," << pos.x << "," << pos.y << "," << velocity.x << "," \
+        << "," << velocity.y << "," << r.x << "," << r.y << "\n";
+};
 
-// }
+void GravitationalModel() {
+    std::ofstream outstrm;
+    outstrm.open("data_out.csv", std::ios::out);
+    TableInit(outstrm);
+    // F = G * (m * M) / r^2
+
+    // const double K = 2 ;//* 1e10; // m * M
+    const double G = 6.67 ;//* 1e-11; // G
+
+    Rdec2D r_pos_dec =  {2.3, 3.0};
+    Rdec2D r_velocity = {4.2, -1.2}; // circle
+    // Rdec2D r_velocity = {12.2, 0.2}; // circle
+
+
+    // counting vec[r] F
+    double r_norm = Norm(r_pos_dec);
+    Rdec2D r_f = r_pos_dec * (1 / (r_norm * r_norm * r_norm)) * G * (-1); // vec[r] of F
+
+    double dt = 0.1;
+
+    Rdec2D new_pos = r_pos_dec;
+
+    std::cout << r_pos_dec << "," << r_velocity << "," << r_f << "\n";
+
+    int i = 1;
+    while (i <= 1000) {
+        // vector of speed
+        r_velocity = r_velocity + r_f * dt;
+
+        // update new positions in Rdec2D
+        new_pos = new_pos + r_velocity * dt;
+
+        // update F
+        double r_nw_pos_norm = Norm(new_pos);
+        r_f = new_pos * (1 / (r_nw_pos_norm * r_nw_pos_norm * r_nw_pos_norm)) * G * (-1);
+
+        // out in table
+        WriteInTable(outstrm, i, dt, new_pos, r_velocity, r_f);
+
+        // out in stream
+        std::cout << new_pos << ",";
+
+        // // gain delta angles
+        // Rpol2D r_velocity_pol = transform_to_Rpol2D(r_velocity);
+        // Rpol2D r_new_pos_pol = transform_to_Rpol2D(new_pos);
+        
+        // // update new angles
+        // r_norm = Norm(new_pos);
+        // r_f = r_pos_dec * (1 / (r_norm * r_norm * r_norm)) * G * (-1);
+        // r_velocity_pol.phi += dq_phi;
+
+        // // update pos
+        // nr_vec = r_f + r_velocity;
+        // new_pos = new_pos + nr_vec;
+
+        // // return to Rdec2D
+        // r_velocity = transform_to_Rdec2D(r_velocity_pol);
+
+        // // update phi
+        // dq_phi =  std::abs(new_pos_phi - s_pos_phi);
+
+        // update time
+        // dt += 0.01;
+        i += 1;
+    }
+    outstrm.close();
+}
