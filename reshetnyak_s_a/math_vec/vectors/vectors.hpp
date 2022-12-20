@@ -13,6 +13,8 @@ struct Rpol2D {
 
 // Dec
 
+Rdec2D operator-(const Rdec2D &vec);
+
 Rdec2D operator+(const Rdec2D &lhs, const Rdec2D &rhs);
 
 Rdec2D operator-(const Rdec2D &lhs, const Rdec2D &rhs);
@@ -34,6 +36,8 @@ Rpol2D transform_to_Rpol2D(const Rdec2D &vec);
 
 
 // Pol
+
+Rpol2D operator-(const Rpol2D &vec);
 
 Rpol2D operator+(const Rpol2D &lhs, const Rpol2D &rhs);
 

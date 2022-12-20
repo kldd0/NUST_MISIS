@@ -3,6 +3,7 @@
 #include "vectors_models.hpp"
 #include <limits>
 #include <fstream>
+#include <cmath>
 
 const double rA = 0.5;
 
@@ -89,7 +90,7 @@ void TableInit(std::ofstream& outstrm) {
 }
 
 void WriteInTable(std::ofstream& outstrm, int n, double t, Rdec2D& pos, Rdec2D& velocity, Rdec2D& r) {
-    outstrm << n << "," << t << "," << pos.x << "," << pos.y << "," << velocity.x << "," \
+    outstrm << n << "," << t << "," << pos.x << "," << pos.y << "," << velocity.x \
         << "," << velocity.y << "," << r.x << "," << r.y << "\n";
 };
 
@@ -99,26 +100,27 @@ void GravitationalModel() {
     TableInit(outstrm);
     // F = G * (m * M) / r^2
 
-    // const double K = 2 ;//* 1e10; // m * M
-    const double G = 6.67 ;//* 1e-11; // G
+    // const double K = 5 ;//* 1e//10; // m * M
+    const double G = 6.67; // * 1e-11; // G
 
-    Rdec2D r_pos_dec =  {2.3, 3.0};
-    Rdec2D r_velocity = {4.2, -1.2}; // circle
-    // Rdec2D r_velocity = {12.2, 0.2}; // circle
-
+    Rdec2D r_pos_dec =  {0, 8.0};
+    Rdec2D r_velocity = {1.6, 0.0};
 
     // counting vec[r] F
     double r_norm = Norm(r_pos_dec);
     Rdec2D r_f = r_pos_dec * (1 / (r_norm * r_norm * r_norm)) * G * (-1); // vec[r] of F
 
-    double dt = 0.1;
+    // out in table
+    WriteInTable(outstrm, 0, 0, r_pos_dec, r_velocity, r_f);
+
+    double dt = 1e-4;
 
     Rdec2D new_pos = r_pos_dec;
 
     std::cout << r_pos_dec << "," << r_velocity << "," << r_f << "\n";
 
     int i = 1;
-    while (i <= 1000) {
+    while (i <= 1000000) {
         // vector of speed
         r_velocity = r_velocity + r_f * dt;
 
@@ -129,33 +131,12 @@ void GravitationalModel() {
         double r_nw_pos_norm = Norm(new_pos);
         r_f = new_pos * (1 / (r_nw_pos_norm * r_nw_pos_norm * r_nw_pos_norm)) * G * (-1);
 
+        if (new_pos.x > 4 && new_pos.y > 10) r_velocity = -r_velocity;
+
         // out in table
-        WriteInTable(outstrm, i, dt, new_pos, r_velocity, r_f);
+        if (i % 100 == 0) WriteInTable(outstrm, i, dt, new_pos, r_velocity, r_f);
 
-        // out in stream
-        std::cout << new_pos << ",";
-
-        // // gain delta angles
-        // Rpol2D r_velocity_pol = transform_to_Rpol2D(r_velocity);
-        // Rpol2D r_new_pos_pol = transform_to_Rpol2D(new_pos);
-        
-        // // update new angles
-        // r_norm = Norm(new_pos);
-        // r_f = r_pos_dec * (1 / (r_norm * r_norm * r_norm)) * G * (-1);
-        // r_velocity_pol.phi += dq_phi;
-
-        // // update pos
-        // nr_vec = r_f + r_velocity;
-        // new_pos = new_pos + nr_vec;
-
-        // // return to Rdec2D
-        // r_velocity = transform_to_Rdec2D(r_velocity_pol);
-
-        // // update phi
-        // dq_phi =  std::abs(new_pos_phi - s_pos_phi);
-
-        // update time
-        // dt += 0.01;
+        // iteration
         i += 1;
     }
     outstrm.close();

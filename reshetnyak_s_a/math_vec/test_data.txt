@@ -1,0 +1,31 @@
+#Elipse
+    const double K = 5 ;//* 1e10; // m * M
+    const double G = 6.67 ;//* 1e-11; // G
+
+    Rdec2D r_pos_dec =  {0, 3.0};
+    Rdec2D r_velocity = {4.2, -1.2};
+
+#Circle
+    const double G = 6.67 ;//* 1e-11; // G
+
+    Rdec2D r_pos_dec =  {0, 3.0};
+    double r_norm = Norm(r_pos_dec);
+    Rdec2D r_velocity = {std::sqrt(G / r_norm), 0};
+
+#Hyperbola
+    const double G = 1 ;//* 1e-11; // G
+
+    Rdec2D r_pos_dec =  {5.0, -10.0};
+    Rdec2D r_velocity = {0, 0.5};
+
+    dt = 1e-1
+
+#Parabola
+    const double K = 10 ;//* 1e10; // m * M
+    const double G = 6.67 ;//* 1e-11; // G
+
+    Rdec2D r_pos_dec =  {-4.0, 0.0};
+
+    double r_norm = Norm(r_pos_dec);
+
+    Rdec2D r_velocity = {0, std::sqrt(2 * G / r_norm)};
