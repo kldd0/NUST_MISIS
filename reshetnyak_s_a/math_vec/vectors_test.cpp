@@ -1,6 +1,6 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
-#include <vectors/vectors.hpp>
+#include <lib-vectors/vectors.hpp>
 #include <numbers>
 
 TEST_CASE("Dec functions") {

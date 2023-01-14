@@ -1,38 +1,52 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.7)
 
 set(CMAKE_CXX_STANDARD 20)
 
-# if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.12.25835)
-#     set(CMAKE_CXX20_STANDARD_COMPILE_OPTION "-std:c++latest")
-#     set(CMAKE_CXX20_EXTENSION_COMPILE_OPTION "-std:c++latest")
-# endif()
+project("gravity-modeling")
 
-project("vectors")
-
-add_subdirectory(vectors) # for vectors library
-
-# add_subdirectory(models) # for models
+option(USE_STATIC "Use static library" ON)
+message(STATUS "OS: ${CMAKE_SYSTEM_NAME}")
+message(STATUS "Compile with static library? ${USE_STATIC}")
 
 include_directories(.)
 
-# add_executable(
-#     vectors_models
-#     vectors_models.cpp
-# )
-
-# target_link_libraries(vectors_models vectors)
-
+# making executable for running tests
 add_executable(
-    vectors_test
+    run_tests
     vectors_test.cpp
 )
 
-target_link_libraries(vectors_test vectors)
-
+# executable for main program
 add_executable(
-    vectors_entrypoint
+    entrypoint
     vectors_entrypoint.cpp
     vectors_models.cpp
 )
 
-target_link_libraries(vectors_entrypoint vectors)
+add_library(vectors-obj
+    OBJECT
+        lib-vectors/vectors.cpp
+        lib-vectors/vectors.hpp
+)
+
+target_compile_options(vectors-obj
+    PRIVATE
+        -Wall
+)
+
+if(USE_STATIC)
+    add_library(vectors-a
+        STATIC
+            $<TARGET_OBJECTS:vectors-obj>
+    )
+    target_link_libraries(entrypoint vectors-a)
+    target_link_libraries(run_tests vectors-a)
+
+else()
+    add_library(vectors-so
+        SHARED
+            $<TARGET_OBJECTS:vectors-obj>
+    )
+    target_link_libraries(entrypoint vectors-so)
+    target_link_libraries(run_tests vectors-so)
+endif()

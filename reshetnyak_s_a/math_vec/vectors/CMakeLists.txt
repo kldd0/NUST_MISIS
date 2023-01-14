@@ -1,1 +1,0 @@
-add_library(vectors vectors.cpp vectors.hpp)

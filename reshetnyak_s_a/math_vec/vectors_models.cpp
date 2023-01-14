@@ -1,5 +1,5 @@
 #include <iostream>
-#include <vectors/vectors.hpp>
+#include <lib-vectors/vectors.hpp>
 #include "vectors_models.hpp"
 #include <limits>
 #include <fstream>
@@ -42,7 +42,6 @@ Rdec2D attend(Rdec2D r_c, Rdec2D r_m, Rdec2D v_m, double v_c0, double dt, double
 
 
 void CatchUpModel() {
-    std::cout << "qwer" << "\n";
     // initial coordinates of cat and mouse (radius vectors)
     Rdec2D r_c = {10.0, 0.0};
     Rdec2D r_m = {0.0, -7.0};
